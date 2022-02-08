@@ -17,15 +17,23 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+private double applyDeadband(double deadBand){
+  if (Math.abs(deadBand)<.05){
+    return 0;
 
+  }
+  else{
+    return deadBand;
+  }
+}
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
   public void driveBot(double left, double right) {
-    leftFrontMotor.set(ControlMode.PercentOutput, left);
+    leftFrontMotor.set(ControlMode.PercentOutput, applyDeadband(left));
     leftRearMotor.follow(leftFrontMotor);
-    rightFrontMotor.set(ControlMode.PercentOutput, right);
+    rightFrontMotor.set(ControlMode.PercentOutput, applyDeadband(right));
     rightRearMotor.follow(rightFrontMotor);
 
   }
